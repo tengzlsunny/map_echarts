@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>map_echarts</title>
+    <style>
+        #main {
+            width: 600px;
+            height: 600px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+<script src="js/echarts.min.js"></script>
+<script src="js/china.js"></script>
+<script>
+    var main = echarts.init(document.getElementById('main'))
+    var data = [
+        {value: 30, name: '湖南', color: '#f3b920'},
+        {value: 10, name: '浙江', color: '#e14748'},
+        {value: 9,name: '北京', color: '#3b7fc2'},
+        {value: 20,name: '内蒙古', color: '#2ab26c'},
+        {value: 8,name: '四川', color: '#41bdcd'},
+        {value: 15,name: '湖北', color: '#c00'},
+        {value: 22,name: '广西', color: '#0366d6'}
+    ]
+    option = {
+        tooltip:{
+            show:true,
+            formatter:function(params){
+                if (params.value) {
+                    return params.name +'<br />'+ params.value.toFixed(2) +'%'; 
+                }
+            }
+        },
+        visualMap:{
+            type:'piecewise',
+            precision: 2,
+            left: 520,
+            align: 'left',
+            pieces:[
+                {value: data[0].value},
+                {value: data[1].value},
+                {value: data[2].value},
+                {value: data[3].value},
+                {value: data[4].value},
+                {value: data[5].value},
+                {value: data[6].value}
+            ],
+            inRange:{
+                color:[data[0].color,data[1].color,data[2].color,data[3].color,data[4].color,data[5].color,data[6].color]
+            },
+            outOfRange:{
+                color:[data[0].color,data[1].color,data[2].color,data[3].color,data[4].color,data[5].color,data[6].color]
+            },
+            data: data,
+            formatter:function(a){
+                return a.toFixed(2) + '%'
+            },
+            textStyle: {
+                color: function (params){
+                    var colorList = [data[0].color,data[1].color,data[2].color,data[3].color,data[4].color,data[5].color,data[6].color]
+                    return colorList[params.dataIndex];
+                },
+            }
+        },
+        
+        series: [
+            {
+                type: 'map',
+                map: 'china',
+                aspectScale: 0.75,
+                zoom:1.2,
+                label:{
+                    normal: {
+                        show: false,
+                        textStyle:{
+                            color:'#fff'
+                        }
+                    },
+                    emphasis: {
+                        show: true,
+                        textStyle:{
+                            color:'#333',
+                            fontSize:14
+                        }
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                    },
+                    emphasis:{
+                        areaColor: '#dbe5f5',
+                    }
+                },
+                data: data
+            }
+        ]
+    };
+    main.setOption(option)
+</script>
+</html>
